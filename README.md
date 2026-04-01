@@ -25,14 +25,14 @@ Follow these steps to build LAMMPS using the provided setup script:
    cd build
    ```
 
-2. **Copy the setup script** from `scripts/` into the `build` directory (replace `setup_lammps.sh` with the actual script filename):
+2. **Copy the setup script** from `scripts/` into the `build` directory:
    ```bash
-   cp ../scripts/setup_lammps.sh .
+   cp ../scripts/setup.sh .
    ```
 
 3. **Run the setup script**:
    ```bash
-   bash setup_lammps.sh
+   bash setup.sh
    ```
 
 The script will automatically apply the required patch and build LAMMPS.
