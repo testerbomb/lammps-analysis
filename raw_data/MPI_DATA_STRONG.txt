@@ -1,0 +1,121 @@
+
+=== Running NP=1 ===
+Performance: 3535.205 tau/day, 8.183 timesteps/s, 2.095 Matom-step/s
+99.1% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 10.075     | 10.075     | 10.075     |   0.0 | 82.45
+Neigh   | 1.7601     | 1.7601     | 1.7601     |   0.0 | 14.40
+Comm    | 0.12891    | 0.12891    | 0.12891    |   0.0 |  1.05
+Output  | 0.0015286  | 0.0015286  | 0.0015286  |   0.0 |  0.01
+Modify  | 0.24577    | 0.24577    | 0.24577    |   0.0 |  2.01
+Other   |            | 0.008298   |            |       |  0.07
+
+--- 1 ---
+=== Running NP=2 ===
+Performance: 6871.518 tau/day, 15.906 timesteps/s, 4.072 Matom-step/s
+99.2% CPU use with 2 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5.0762     | 5.0903     | 5.1043     |   0.6 | 80.97
+Neigh   | 0.89262    | 0.89302    | 0.89341    |   0.0 | 14.20
+Comm    | 0.11122    | 0.12498    | 0.13873    |   3.9 |  1.99
+Output  | 0.0007862  | 0.00082761 | 0.00086902 |   0.0 |  0.01
+Modify  | 0.17341    | 0.17347    | 0.17354    |   0.0 |  2.76
+Other   |            | 0.004252   |            |       |  0.07
+
+--- 2 ---
+=== Running NP=4 ===
+Performance: 10191.181 tau/day, 23.591 timesteps/s, 6.039 Matom-step/s
+99.2% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 3.3282     | 3.3385     | 3.3495     |   0.5 | 78.76
+Neigh   | 0.58748    | 0.58851    | 0.5896     |   0.1 | 13.88
+Comm    | 0.12711    | 0.13708    | 0.1467     |   2.1 |  3.23
+Output  | 0.00048808 | 0.00055389 | 0.00064559 |   0.0 |  0.01
+Modify  | 0.17034    | 0.17065    | 0.17088    |   0.0 |  4.03
+Other   |            | 0.003683   |            |       |  0.09
+
+--- 4 ---
+=== Running NP=8 ===
+Performance: 20011.964 tau/day, 46.324 timesteps/s, 11.859 Matom-step/s
+99.3% CPU use with 8 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.2661     | 1.55       | 1.6467     |  12.6 | 71.80
+Neigh   | 0.22936    | 0.28107    | 0.29943    |   5.6 | 13.02
+Comm    | 0.1583     | 0.27873    | 0.64112    |  37.5 | 12.91
+Output  | 0.00025244 | 0.00033723 | 0.00050828 |   0.0 |  0.02
+Modify  | 0.020653   | 0.047034   | 0.055177   |   5.3 |  2.18
+Other   |            | 0.001577   |            |       |  0.07
+
+--- 8 ---
+=== Running NP=16 ===
+Performance: 38832.611 tau/day, 89.890 timesteps/s, 23.012 Matom-step/s
+99.3% CPU use with 16 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.63356    | 0.77111    | 0.8228     |   8.8 | 69.32
+Neigh   | 0.11461    | 0.14131    | 0.15136    |   4.0 | 12.70
+Comm    | 0.11458    | 0.17983    | 0.35203    |  22.8 | 16.16
+Output  | 0.00018338 | 0.00025875 | 0.00033313 |   0.0 |  0.02
+Modify  | 0.010367   | 0.019105   | 0.023903   |   3.2 |  1.72
+Other   |            | 0.0008547  |            |       |  0.08
+
+--- 16 ---
+=== Running NP=32 ===
+Performance: 39647.241 tau/day, 91.776 timesteps/s, 23.495 Matom-step/s
+69.5% CPU use with 32 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.31777    | 0.37278    | 0.41514    |   6.1 | 34.21
+Neigh   | 0.058042   | 0.068139   | 0.076281   |   3.0 |  6.25
+Comm    | 0.58836    | 0.63961    | 0.706      |   5.8 | 58.70
+Output  | 0.0003858  | 0.00055416 | 0.0007513  |   0.0 |  0.05
+Modify  | 0.0056379  | 0.0080941  | 0.011922   |   1.9 |  0.74
+Other   |            | 0.0004287  |            |       |  0.04
+
+--- 32 ---
+=== Running NP=64 ===
+Performance: 69466.337 tau/day, 160.802 timesteps/s, 41.165 Matom-step/s
+65.2% CPU use with 64 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.15712    | 0.18021    | 0.20715    |   4.4 | 28.98
+Neigh   | 0.029291   | 0.033383   | 0.038501   |   2.0 |  5.37
+Comm    | 0.37025    | 0.40337    | 0.43151    |   3.6 | 64.86
+Output  | 0.00037823 | 0.00059936 | 0.00092681 |   0.0 |  0.10
+Modify  | 0.0029228  | 0.0040471  | 0.0062754  |   1.2 |  0.65
+Other   |            | 0.0002704  |            |       |  0.04
+
+--- 64 ---
+=== Running NP=128 ===
+Performance: 57301.744 tau/day, 132.643 timesteps/s, 33.957 Matom-step/s
+54.8% CPU use with 128 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.07715    | 0.094639   | 0.10521    |   3.0 | 12.55
+Neigh   | 0.014732   | 0.017965   | 0.020078   |   1.4 |  2.38
+Comm    | 0.62428    | 0.63711    | 0.65861    |   1.4 | 84.51
+Output  | 0.00098314 | 0.0014988  | 0.0019268  |   0.7 |  0.20
+Modify  | 0.0016743  | 0.0024179  | 0.0040103  |   0.9 |  0.32
+Other   |            | 0.0002682  |            |       |  0.04
+
+--- 128 ---

@@ -1,0 +1,91 @@
+
+=== Running NODES=1 (NP=1) ===
+
+Performance: 14889.284 tau/day, 34.466 timesteps/s, 8.823 Matom-step/s
+3111.6% CPU use with 1 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.4933     | 1.4933     | 1.4933     |   0.0 | 51.47
+Neigh   | 0.1106     | 0.1106     | 0.1106     |   0.0 |  3.81
+Comm    | 0.24095    | 0.24095    | 0.24095    |   0.0 |  8.30
+Output  | 0.0017351  | 0.0017351  | 0.0017351  |   0.0 |  0.06
+Modify  | 1.027      | 1.027      | 1.027      |   0.0 | 35.40
+Other   |            | 0.02781    |            |       |  0.96
+--- 1 nodes, 1 tasks ---
+=== Running NODES=2 (NP=2) ===
+
+Performance: 15892.116 tau/day, 36.787 timesteps/s, 9.418 Matom-step/s
+2742.5% CPU use with 2 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.83694    | 0.94898    | 1.061      |  11.5 | 34.91
+Neigh   | 0.055627   | 0.062501   | 0.069376   |   2.7 |  2.30
+Comm    | 0.33809    | 0.7479     | 1.1577     |  47.4 | 27.51
+Output  | 0.0012679  | 0.0012812  | 0.0012944  |   0.0 |  0.05
+Modify  | 0.66482    | 0.93114    | 1.1974     |  27.6 | 34.25
+Other   |            | 0.02653    |            |       |  0.98
+--- 2 nodes, 2 tasks ---
+=== Running NODES=3 (NP=3) ===
+
+Performance: 30511.995 tau/day, 70.630 timesteps/s, 18.081 Matom-step/s
+3074.6% CPU use with 3 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.52367    | 0.57108    | 0.59959    |   4.5 | 40.34
+Neigh   | 0.038588   | 0.040077   | 0.041953   |   0.7 |  2.83
+Comm    | 0.30528    | 0.36024    | 0.43222    |   8.9 | 25.44
+Output  | 0.0016441  | 0.0016627  | 0.001696   |   0.1 |  0.12
+Modify  | 0.41831    | 0.44137    | 0.46592    |   2.9 | 31.17
+Other   |            | 0.001404   |            |       |  0.10
+--- 3 nodes, 3 tasks ---
+=== Running NODES=4 (NP=4) ===
+
+Performance: 34813.210 tau/day, 80.586 timesteps/s, 20.630 Matom-step/s
+3115.6% CPU use with 4 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.46757    | 0.47251    | 0.47938    |   0.7 | 38.08
+Neigh   | 0.036235   | 0.037195   | 0.038031   |   0.3 |  3.00
+Comm    | 0.32658    | 0.3461     | 0.35848    |   2.1 | 27.89
+Output  | 0.00077012 | 0.00078935 | 0.00081245 |   0.0 |  0.06
+Modify  | 0.375      | 0.3832     | 0.40037    |   1.6 | 30.88
+Other   |            | 0.001101   |            |       |  0.09
+--- 4 nodes, 4 tasks ---
+=== Running NODES=5 (NP=5) ===
+
+Performance: 21941.308 tau/day, 50.790 timesteps/s, 13.002 Matom-step/s
+2840.6% CPU use with 5 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.67114    | 0.75936    | 0.81977    |   6.1 | 38.57
+Neigh   | 0.029903   | 0.032034   | 0.033837   |   0.9 |  1.63
+Comm    | 0.49211    | 0.67175    | 0.84869    |  14.7 | 34.12
+Output  | 0.0012502  | 0.0022641  | 0.0059017  |   3.8 |  0.11
+Modify  | 0.41669    | 0.50246    | 0.62274    |  10.0 | 25.52
+Other   |            | 0.001022   |            |       |  0.05
+--- 5 nodes, 5 tasks ---
+=== Running NODES=6 (NP=6) ===
+
+Performance: 40042.363 tau/day, 92.691 timesteps/s, 23.729 Matom-step/s
+3098.3% CPU use with 6 MPI tasks x 32 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.32252    | 0.36857    | 0.40187    |   4.4 | 34.16
+Neigh   | 0.024991   | 0.026374   | 0.028712   |   0.8 |  2.44
+Comm    | 0.32487    | 0.39279    | 0.48739    |   8.7 | 36.41
+Output  | 0.0012189  | 0.0012459  | 0.0012872  |   0.1 |  0.12
+Modify  | 0.24143    | 0.28905    | 0.3225     |   5.0 | 26.79
+Other   |            | 0.0008235  |            |       |  0.08
+--- 6 nodes, 6 tasks ---
