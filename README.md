@@ -1,38 +1,56 @@
 # lammps-analysis
 
-A repository for LAMMPS simulation setup and analysis.
+A repository for LAMMPS analysis.
 
 ## Repository Layout
 
-```
-lammps-analysis/
-├── scripts/       # Testing scripts and the LAMMPS setup script
-└── raw_data/      # Raw testing data
-```
 
 | Directory  | Description                                      |
 |------------|--------------------------------------------------|
 | `scripts/` | Testing scripts and the LAMMPS build setup script |
-| `raw_data/`| Raw testing data collected from simulations       |
+| `raw_data/` | Raw testing data collected from simulations       |
 
 ## Setting Up LAMMPS
 
 Follow these steps to build LAMMPS using the provided setup script:
+1. **Clone the Lammps official repo:**
+   ```bash
+   git clone https://github.com/lammps/lammps.git
+   ```
 
-1. **Create a build directory** inside the LAMMPS home directory:
+2. **Create a build directory** inside the LAMMPS home directory:
    ```bash
    mkdir build
    cd build
    ```
 
-2. **Copy the setup script** from `scripts/` into the `build` directory:
-   ```bash
-   cp ../scripts/setup.sh .
-   ```
+3. **Copy the setup script** from `setup.sh` into the `build` directory:
 
-3. **Run the setup script**:
+4. **Run the setup script**:
    ```bash
    bash setup.sh
    ```
 
 The script will automatically apply the required patch and build LAMMPS.
+
+## The Patch
+
+Lammps is built with compiler compatibility macros, they work most of the time but we found a conflict
+with the OMP version detection. These macros can be found here: `lammps/src/omp_compat.h`:
+```C
+#if LAMMPS_OMP_COMPAT == 4
+#  define LMP_SHARED(...)
+#  define LMP_DEFAULT_NONE default(shared)
+#else
+#  define LMP_SHARED(...) shared(__VA_ARGS__)
+#  define LMP_DEFAULT_NONE default(none)
+#endif
+```
+
+This does not play well with our cluster version. At line 209 of `lammps/src/OPENMP/fix_nvt_sllod_omp.cpp`:
+```C
+#pragma omp parallel for LMP_DEFAULT_NONE LMP_SHARED(grad_u) schedule(static)
+```
+the variable `xmid` is not specified, which throws a compilation error.
+
+We added a patch that simply adds `xmid` to that shared declaration.
