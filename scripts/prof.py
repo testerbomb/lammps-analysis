@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
+import math
 import os
 import argparse
+import random
 import subprocess
 import csv
 
@@ -13,7 +15,7 @@ def arg_parser():
 
     # Profile
     profile = subparsers.add_parser("profile", help="Run LAMMPS scaling sweeps")
-    profile.add_argument("-in", dest="input", required=True, help="Path to LAMMPS input script")
+    profile.add_argument("-in", dest="input", default="../bench/in.lj", help="Path to LAMMPS input script")
     profile.add_argument("-jm", dest="jm", default="slurm", help="Job manager: slurm | none")
     profile.add_argument("-omp", dest="omp", type=int, default=1, help="Max OMP threads to sweep to")
     profile.add_argument("-mpi", dest="mpi", type=int, default=1, help="Max MPI procs to sweep to")
@@ -23,6 +25,7 @@ def arg_parser():
     profile.add_argument("-out", dest="out", default="./results", help="Output directory")
     profile.add_argument("-tpn", dest="tpn", type=int, default=1, help="Taks per node")
     profile.add_argument("-fmt", dest="fmt", default="raw", help="raw | csv:  Parsing LAMMPS output into CSV at runtime")
+    profile.add_argument("-sf", dest="sf", default="constant", help="How the input scales [linear | constant] (only tested with in.lj)")
 
     # Parse
     parse = subparsers.add_parser("parse", help="Parse existing LAMMPS output files")
@@ -47,12 +50,20 @@ def pow2_range(max_val):
     counts.append(max_val)  # always include the actual max
     return counts
 
+
+
 def build_command(config, mpi, omp):
     lammps_args = f"-sf omp -pk omp {omp} -in {config['input']}"
+    if config["sf"] == "linear":
+        # double the volume of a cube
+        scaling_factor = omp * mpi ** (1/3)
+        round_z = random.choice([math.floor, math.ceil])
+        lammps_args += f' -var x {math.floor(scaling_factor)} -var y {math.ceil(scaling_factor)} -var z {round_z(scaling_factor)}'
     if config["jm"] == "slurm":
         return f"srun --mpi=pmi2 -n {mpi} --ntasks-per-node={config['tpn']} lmp {lammps_args}"
     elif config["jm"] == "none":
         return f"mpirun -np {mpi} lmp {lammps_args}"
+
 
 def parse_mpi_timing(output):
     timing = {}
@@ -86,7 +97,6 @@ def parse_mpi_timing(output):
     return timing
 
 def write_timing_csv(timings, csv_file):
-    import csv
 
     if not timings:
         print("WARNING: no timing data to write")
@@ -148,6 +158,7 @@ def run_sweeps(config, parser):
                     result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     if result.returncode != 0:
                         print(f"WARNING: run exited with code {result.returncode} skipping this configuration... Output as Follows\n{result.stdout.decode()}",end="")
+                        continue
                     output = result.stdout.decode()
                     t = parse_mpi_timing(output)
                     t["mpi"] = mpi
