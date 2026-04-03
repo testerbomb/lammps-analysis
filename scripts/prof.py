@@ -38,6 +38,7 @@ def arg_parser():
     profile.add_argument('-out',    dest='out',                     default='./results',    help='Output directory')
     profile.add_argument('-tpn',    dest='tpn',     type=int,       default=1,              help='Taks per node')
     profile.add_argument('-fmt',    dest='fmt',                     default='raw',          help='raw | csv:  Parsing LAMMPS output into CSV at runtime')
+    profile.add_argument('-sf',      dest='sf',                      default='none',         help='none | linear: how the input scales with nprocs')
 
     # Parser config
     parse = subparsers.add_parser('parse', help='Parse existing LAMMPS output files')
@@ -86,10 +87,10 @@ def build_command(config, mpi, omp):
     Returns:
         Bash command
     '''
-    lammps_args = f'-sf omp -pk omp {omp} -in {config['input']}'
+    lammps_args = f'-sf omp -pk omp {omp} -in {config["input"]}'
     if config["sf"] == "linear":
         # double the volume of a cube
-        scaling_factor = omp * mpi ** (1/3)
+        scaling_factor = (omp * mpi) ** (1/3)
         round_z = random.choice([math.floor, math.ceil])
         lammps_args += f' -var x {math.floor(scaling_factor)} -var y {math.ceil(scaling_factor)} -var z {round_z(scaling_factor)}'
     if config['jm'] == 'slurm':
