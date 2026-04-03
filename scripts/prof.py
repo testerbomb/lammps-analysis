@@ -25,6 +25,8 @@ def arg_parser():
     profile = subparsers.add_parser('profile', help='Run LAMMPS scaling sweeps')
 
     profile.add_argument('-in',     dest='input',   required=True,                          help='Path to LAMMPS input script')
+    profile.add_argument('-lmp',    dest='lmp',                     default='lmp',          help='Path to LAMMPS executable (default=PATH)')
+
     profile.add_argument('-jm',     dest='jm',                      default='slurm',        help='Job manager: slurm | none')
     profile.add_argument('-omp',    dest='omp',     type=int,       default=1,              help='Max OMP threads to sweep to')
     profile.add_argument('-mpi',    dest='mpi',     type=int,       default=1,              help='Max MPI procs to sweep to')
@@ -85,9 +87,9 @@ def build_command(config, mpi, omp):
     lammps_args = f'-sf omp -pk omp {omp} -in {config['input']}'
     if config['jm'] == 'slurm':
         return (f'srun --mpi=pmi2 -n {mpi}' +
-                f'--ntasks-per-node={config['tpn']} lmp {lammps_args}')
+                f'--ntasks-per-node={config['tpn']} {config['lmp']} {lammps_args}')
     elif config['jm'] == 'none':
-        return f'mpirun -np {mpi} ./lmp {lammps_args}'
+        return f'mpirun -np {mpi} {config['lmp']} {lammps_args}'
 
 
 def parse_mpi_timing(output):
@@ -251,12 +253,81 @@ def parse_output(config, parser):
         config (dict):           Parsed configuration
         parser (ArgumentParser): Parse subparser
     """
-    pass
+
+    # TODO: clean + document
+
+    # Initialization
+    input_path = config['input']
+    os.makedirs(config['out'], exist_ok=True)
+    out_file = os.path.join(config['out'], 'lmp_timings.csv')
+
+    # Accumulate files to parse
+    if os.path.isdir(input_path):
+        files = [
+            os.path.join(input_path, f) for f in os.listdir(input_path)
+                                        if f.endswith('out')
+        ]
+
+        if not files:
+            parser.error(f'no .out files in directory: {input_path}')
+    elif os.path.isfile(input_path):
+        files = [input_path]
+    else:
+        parser.error(f'input path does not exist: {input_path}')
+
+    groups = {} # (mpi, opm) -> list of timing dicts
+
+    for filepath in sorted(files):
+        filename = os.path.basename(filepath).removesuffix('.out')
+        mpi, omp, trial = 1, 1, 1
+
+        try:
+            # lmp_omp{omp}_mpi{mpi}trial{trial}
+            if filename.startswith('lmp_omp') and '_mpi' in filename and 'trial' in filename:
+                after_omp   = filename.split('lmp_omp', 1)[1]       # "{omp}_mpi{mpi}trial{trial}"
+                omp_str, rest = after_omp.split('_mpi', 1)          # "{omp}", "{mpi}trial{trial}"
+                mpi_str, trial_str = rest.split('trial', 1)         # "{mpi}", "{trial}"
+                omp   = int(omp_str)
+                mpi   = int(mpi_str)
+                trial = int(trial_str)
+            else:
+                print(f'WARNING: oculd not parse mpi/omp from "{filename}", defaulting to mpi=1 omp=1')
+        except ValueError:
+            print(f'WARNING: malformed filename "{filename}", defaulting to mpi_1 omp=1')
+
+        try:
+            with open(filepath, 'r') as f:
+                output = f.read()
+        except OSError as e:
+            print(f'WARNING: could not read {filepath}: {e}')
+            continue
+
+        timing = parse_mpi_timing(output)
+        if not timing:
+            print(f'WARNING: no timing data found in {filepath}, skipping')
+            continue
+
+        timing['mpi'] = mpi
+        timing['omp'] = omp
+        timing['trial'] = trial
+
+        key = (mpi, omp)
+        groups.setdefault(key, []).append(timing)
+        print(f'parsed [mpi={mpi} omp={omp} trial={trial}] <- {os.path.basename(filepath)}')
+
+    if not groups:
+        print('WARNING: no timing data extracted from any file')
+        return
+
+    for (mpi, omp), timings in groups.items():
+        write_timing_csv(timings, out_file)
+
+    print(f'\nDone. {len(groups)} configuration(s) written to {out_file}')
 
 
 def main():
     config, profile, parser = arg_parser()
-    if profile:
+    if config['mode'] == 'profile':
         run_sweeps(config, parser)
     else:
         parse_output(config, parser)
