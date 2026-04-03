@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
+import math
 import os
 import argparse
+import random
 import subprocess
 
 
@@ -72,6 +74,7 @@ def pow2_range(max_val):
     return counts
 
 
+
 def build_command(config, mpi, omp):
     '''
     Build shell command for single LAMMPS run.
@@ -85,11 +88,17 @@ def build_command(config, mpi, omp):
         Bash command
     '''
     lammps_args = f'-sf omp -pk omp {omp} -in {config['input']}'
+    if config["sf"] == "linear":
+        # double the volume of a cube
+        scaling_factor = omp * mpi ** (1/3)
+        round_z = random.choice([math.floor, math.ceil])
+        lammps_args += f' -var x {math.floor(scaling_factor)} -var y {math.ceil(scaling_factor)} -var z {round_z(scaling_factor)}'
     if config['jm'] == 'slurm':
         return (f'srun --mpi=pmi2 -n {mpi}' +
                 f'--ntasks-per-node={config['tpn']} {config['lmp']} {lammps_args}')
     elif config['jm'] == 'none':
         return f'mpirun -np {mpi} {config['lmp']} {lammps_args}'
+
 
 
 def parse_mpi_timing(output):
