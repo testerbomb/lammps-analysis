@@ -1,0 +1,48 @@
+# LJ imbalance benchmark
+
+
+variable        x          index 1
+variable        y          index 1
+variable        z          index 1
+
+variable        split      index 0.5       # fractional x split between dense/sparse [0,1]
+variable        dense_lat  index 1.5       # fcc lattice constant for dense region
+variable        sparse_lat index 4.0       # fcc lattice constant for sparse region
+
+
+variable        box_x      equal ${x}*4
+variable        box_y      equal ${y}*4
+variable        box_z      equal ${z}*4  # absolute x split position
+variable        splitx     equal ${split}*${box_x}  # absolute x split position
+
+units           lj
+atom_style      atomic
+
+region          box block 0 ${box_x} 0 ${box_y} 0 ${box_z}
+create_box      1 box
+
+region          dense block 0 ${splitx} 0 ${box_y} 0 ${box_z}
+lattice         fcc ${dense_lat}
+create_atoms    1 region dense
+
+region          sparse block ${splitx} ${box_x} 0 ${box_y} 0 ${box_z}
+lattice         fcc ${sparse_lat}
+create_atoms    1 region sparse
+
+mass            1 1.0
+
+pair_style      lj/cut 2.5
+pair_coeff      1 1 1.0 1.0 2.5
+
+neighbor        0.3 bin
+neigh_modify    delay 0 every 20 check no
+
+minimize        1.0e-4 1.0e-6 1000 10000
+
+velocity        all create 1.44 87287 loop geom
+
+comm_style      tiled
+fix             2 all balance 200 1.05 rcb
+fix             1 all nve
+
+run             200
