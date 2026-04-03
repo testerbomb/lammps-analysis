@@ -27,6 +27,7 @@ A repository for LAMMPS analysis.
    ```bash
    cp path/to/lammps-analysis/scripts/setup.sh ./
    bash setup.sh
+   ```
 
 
 The script will automatically apply the required patch and build LAMMPS.
@@ -55,13 +56,12 @@ We added a patch that simply adds `xmid` to that shared declaration.
 
 ## How to use Profiler
 
-'prof.py' has two modes: 'profile' runs LAMMPS scaling sweeps and collects timing data
-                         'parse' converts existing raw output files to a CSV
+'prof.py' has two modes: 'profile' runs LAMMPS scaling sweeps and collects timing data, and 'parse' converts existing raw output files to a CSV.
 
 ## Running a sweep
-'''bash
+```bash
 python3 prof.py profile -in path/to/input.lj -mpi 8 -step pow -trials 3 -fmt csv -out ./results
-'''
+```
 
 this sweeps MPI ranks at powers of 2 (1, 2, 4, 8), over 3 trials per configuration, and writes averaged timings to './results/lmp_timings.csv'
 
@@ -69,9 +69,10 @@ to collect raw LAMMPS output instead, specify `-fmt raw`
 
 ## Parsing raw output
 
-'''bash
+```bash
 python3 prof.py parse -in ./results -out ./parsed
-'''
+```
 
 this walks through every 'lmp_omp<omp ranks>_mpi<mpi threads>trial<trial count>.out
 averages trials, and write to './parsed/lmp_timings.csv'
+

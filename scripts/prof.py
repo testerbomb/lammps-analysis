@@ -74,7 +74,6 @@ def pow2_range(max_val):
     return counts
 
 
-
 def build_command(config, mpi, omp):
     '''
     Build shell command for single LAMMPS run.
@@ -293,7 +292,7 @@ def parse_output(config, parser):
         try:
             # lmp_omp{omp}_mpi{mpi}trial{trial}
             if filename.startswith('lmp_omp') and '_mpi' in filename and 'trial' in filename:
-                after_omp   = filename.split('lmp_omp', 1)[1]       # "{omp}_mpi{mpi}trial{trial}"
+                after_omp = filename.split('lmp_omp', 1)[1]         # "{omp}_mpi{mpi}trial{trial}"
                 omp_str, rest = after_omp.split('_mpi', 1)          # "{omp}", "{mpi}trial{trial}"
                 mpi_str, trial_str = rest.split('trial', 1)         # "{mpi}", "{trial}"
                 omp   = int(omp_str)
