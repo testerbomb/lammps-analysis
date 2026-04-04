@@ -5,10 +5,10 @@ A repository for LAMMPS analysis.
 ## Repository Layout
 
 
-| Directory  | Description                                       |
-|------------|---------------------------------------------------|
-| `scripts/` | Testing scripts and the LAMMPS build setup script |
-| `raw_data/`| Raw testing data collected from simulations       |
+| Directory  | Description                                                                                       |
+|------------|---------------------------------------------------------------------------------------------------|
+| `scripts/` | prof.py profiling script, LAMMPS build setup script, and the in.lj_unbalanced custom input script |
+| `raw_data/`| Raw testing data collected from simulations                                                       |
 
 ## Setting up LAMMPS
 
@@ -85,6 +85,7 @@ this sweeps MPI ranks at powers of 2 (1, 2, 4, 8), over 3 trials per configurati
 Use ```-sf linear``` to run input size scaling with number of processes ONLY TESTED WITH STOCK in.lj AND  OUR in.lj_unbalanced
 
 to collect raw LAMMPS output instead, specify `-fmt raw`
+
 run ```./prof.py profile -h``` for more info
 
 ## Parsing raw output
