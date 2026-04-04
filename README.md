@@ -18,16 +18,22 @@ A repository for LAMMPS analysis.
    ```
 
 2. **Create a build directory** inside the LAMMPS home directory:
-   ```bash
-   mkdir lammps/build
-   cd lammps/build
-   ```
+```text
+   lammps/
+   ├── build/        ← like this
+   ├── src/
+   └── ...
+```
 
-3. **Copy and run the setup script**
-   ```bash
-   cp path/to/lammps-analysis/scripts/setup.sh ./
-   bash setup.sh
-   ```
+4. **Copy and run the setup script**
+```
+   lammps/
+      ├── build/
+      │   ├── setup.sh   ← setup script goes here
+      │   └── ...
+      ├── src/
+      └── ...
+```
 
 
 The script will automatically apply the required patch and build LAMMPS.
@@ -55,24 +61,40 @@ the variable `xmid` is not specified, which throws a compilation error.
 We added a patch that simply adds `xmid` to that shared declaration.
 
 ## How to use Profiler
+This script is meant to run in the build directory at the same level as the ```lmp``` executable:
+```
+   lammps/
+      ├── build/
+      │   ├── setup.sh
+      |   ├── prof.py      ← profiling script goes here
+      |   ├── lmp
+      │   └── ...
+      ├── src/
+      └── ...
+```
 
 'prof.py' has two modes: 'profile' runs LAMMPS scaling sweeps and collects timing data, and 'parse' converts existing raw output files to a CSV.
 
 ## Running a sweep
 ```bash
-python3 prof.py profile -in path/to/input.lj -mpi 8 -step pow -trials 3 -fmt csv -out ./results
+./prof.py profile -in path/to/in.lj -mpi 8 -trials 3 -fmt csv -out ./results
 ```
 
 this sweeps MPI ranks at powers of 2 (1, 2, 4, 8), over 3 trials per configuration, and writes averaged timings to './results/lmp_timings.csv'
 
+Use ```-sf linear``` to run input size scaling with number of processes ONLY TESTED WITH STOCK in.lj AND  OUR in.lj_unbalanced
+
 to collect raw LAMMPS output instead, specify `-fmt raw`
+run ```./prof.py profile -h``` for more info
 
 ## Parsing raw output
 
 ```bash
-python3 prof.py parse -in ./results -out ./parsed
+./prof.py parse -in ./results -out ./parsed
 ```
 
 this walks through every 'lmp_omp<omp ranks>_mpi<mpi threads>trial<trial count>.out
 averages trials, and write to './parsed/lmp_timings.csv'
+
+run ```./prof.py parse -h``` for more info
 
