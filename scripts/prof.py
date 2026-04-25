@@ -95,7 +95,7 @@ def build_command(config, mpi, omp):
         lammps_args += f' -var x {math.floor(scaling_factor)} -var y {math.ceil(scaling_factor)} -var z {round_z(scaling_factor)}'
     if config['jm'] == 'slurm':
         return (f'srun --mpi=pmi2 -n {mpi}' +
-                f'--ntasks-per-node={config['tpn']} {config['lmp']} {lammps_args}')
+                f' --ntasks-per-node={config['tpn']} {config['lmp']} {lammps_args}')
     elif config['jm'] == 'none':
         return f'mpirun -np {mpi} {config['lmp']} {lammps_args}'
 
