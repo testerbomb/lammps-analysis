@@ -12,9 +12,11 @@ A repository for LAMMPS analysis.
 
 ## Setting up LAMMPS
 
-1. **Clone the LAMMPS official repo:**
+1. **Clone the LAMMPS official repo and checkout the release branch:**
    ```bash
    git clone https://github.com/lammps/lammps.git
+   # This is the specific commit we studied
+   git checkout b1ef9f45934826495efe9b442b39e9c74e20095d
    ```
 
 2. **Create a build directory** inside the LAMMPS home directory:
