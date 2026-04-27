@@ -79,7 +79,7 @@ This script is meant to run in the build directory at the same level as the ```l
 
 ## Running a sweep
 ```bash
-./prof.py profile -in path/to/in.lj -mpi 8 -trials 3 -fmt csv -out ./results
+./prof.py profile  -mpi 5 -step pow -trials 3 -tpn 2 -out test_results -fmt csv -in lammps-analysis/scripts/in.lj_unbalanced
 ```
 
 this sweeps MPI ranks at powers of 2 (1, 2, 4, 8), over 3 trials per configuration, and writes averaged timings to './results/lmp_timings.csv'
