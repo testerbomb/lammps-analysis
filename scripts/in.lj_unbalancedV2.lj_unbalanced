@@ -1,0 +1,29 @@
+# LJ imbalance benchmark
+variable        dense_count index 200      # number of dense atoms
+variable        sparse_count index 50      # number of sparse atoms
+
+units           lj
+atom_style      atomic
+
+# fixed large box
+region          box block 0 20 0 20 0 20
+create_box      1 box
+
+region          dense block 0 10 0 20 0 20
+region          sparse block 10 20 0 20 0 20
+
+create_atoms    1 random ${dense_count}  12345 dense  overlap 0.8 maxtry 500
+create_atoms    1 random ${sparse_count} 67890 sparse overlap 0.8 maxtry 500
+
+mass            1 1.0
+pair_style      lj/cut 2.5
+pair_coeff      1 1 1.0 1.0 2.5
+neighbor        0.3 bin
+neigh_modify    delay 0 every 20 check no
+minimize        1.0e-4 1.0e-6 1000 10000
+velocity        all create 1.44 87287 loop geom
+comm_style      brick
+# fix             2 all balance 200 1.05 rcb
+fix             1 all nve
+# dump            1 all custom 10 dump.lammpstrj id type x y z vx vy vz
+run             1200
