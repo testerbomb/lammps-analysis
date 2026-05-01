@@ -7,7 +7,7 @@ A repository for LAMMPS analysis.
 
 | Directory  | Description                                                                                       |
 |------------|---------------------------------------------------------------------------------------------------|
-| `scripts/` | prof.py profiling script, LAMMPS build setup script, and the in.lj_unbalanced custom input script |
+| `scripts/` | prof.py profiling script, LAMMPS build setup script, and the two custom input scripts |
 | `raw_data/`| Raw testing data collected from simulations                                                       |
 
 ## Setting up LAMMPS
